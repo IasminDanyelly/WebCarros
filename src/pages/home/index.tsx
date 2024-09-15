@@ -49,7 +49,7 @@ export function Home() {
   
     getDocs(queryRef)
    .then((snapshot) => {
-       const listcars = [] as CarsProps[]
+       let listcars = [] as CarsProps[]
        
        snapshot.forEach( doc => {
            listcars.push({
@@ -66,18 +66,12 @@ export function Home() {
 
        setCars(listcars);
    })
+}
 
-   }
-
-
-
-   function handleImageLoad(id: string){
-    setLoadImages((prevImageLoaded) => [...prevImageLoaded, id])
-   }
 
    async function handleSearchCar(){
-     if(input === ""){
-      loadCars();
+     if(input === ''){
+      loadCars()
       return;
      }
 
@@ -86,14 +80,14 @@ export function Home() {
 
      const q = query(collection(db, "cars"),
      where("name", ">=", input.toUpperCase()),
-     where("name", "<=", input.toUpperCase() + "\uff8ff")
+     where("name", "<=", input.toUpperCase() + "\uf8ff")
     )
     
-    const querySnapshot = await getDocs(q)
+    const querySnapshot = await getDocs(q);
 
     let listcars = []  as CarsProps[];
 
-    querySnapshot.forEach( doc => {
+    querySnapshot.forEach( (doc) => {
       listcars.push({
           id: doc.id,
           name: doc.data().name,
@@ -104,10 +98,17 @@ export function Home() {
           uid: doc.data().uid,
           km: doc.data().km
       })
-  })
+    })
 
+    setCars(listcars);
    }
  
+
+   function handleImageLoad(id: string){
+    setLoadImages((prevImageLoaded) => [...prevImageLoaded, id])
+   }
+
+
   return (
     <Container>
       <section className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2">
